@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Workshop 3</title>
+<style>
+body{font-family:Arial;max-width:900px;margin:auto;padding:30px;background:#f4f4f4}
+button{padding:8px 12px;margin:5px}
+table{border-collapse:collapse;margin-top:15px}
+th,td{border:1px solid #999;padding:8px 15px}
+textarea{width:100%;max-width:500px}
+#preview{border:1px solid #ccc;padding:8px;min-height:40px;background:#fafafa}
+#keybox{padding:20px;border:1px solid #ccc;font-size:1.2em}
+</style>
+</head>
+<body>
+
+<h1>Workshop 3: JavaScript Events</h1>
+<hr>
+
+<p>
+Workshop 3
+</p>
+
+<hr>
+
+<h2>Exercise 1: Basic Click Events</h2>
+<p>Below you can see two buttons.
+<p>
+<button id="clickButton">Click me</button>
+<button id="tableButton">Show Country table</button>
+</p>
+
+<div id="tableContainer"></div>
+
+<hr>
+
+<h2>Exercise 2: Event Listeners and DOM Manipulation</h2>
+<ul>
+<li>Click the Exercise 1.</li>
+</ul>
+
+<hr>
+
+<h2>Exercise 3: Input Events</h2>
+<p>
+
+</p>
+
+<h3>Quick Feedback Form</h3>
+
+<form id="feedbackForm" novalidate>
+<label for="feedback">Feedback:</label><br>
+<textarea id="feedback" placeholder="Write your feedback..." rows="5" maxlength="200"></textarea><br>
+
+<div>
+<span id="charcount">0/200</span>
+<span id="status" aria-live="polite" style="margin-left:8px;color:#666;"></span>
+</div>
+
+<button id="sendBtn" type="submit">Send</button>
+</form>
+
+<h3>Preview</h3>
+
+<div id="preview">
+(The preview will appear here)
+</div>
+
+<hr>
+
+<h2>Exercise 4: Form Submission</h2>
+<p>
+The feedback must contain between 10 and 200 characters.
+</p>
+
+<hr>
+
+<h2>Exercise 5: Keyboard Events</h2>
+
+<h3>Detecting Key Presses</h3>
+
+<p>
+Press any key on your keyboard.
+</p>
+
+<div id="keybox">
+Press any key...
+</div>
+
+<p id="keyinfo"></p>
+
+<hr>
+
+<script>
+const clickButton=document.querySelector("#clickButton");
+const tableButton=document.querySelector("#tableButton");
+
+clickButton.onclick=function(){
+alert("You clicked me!");
+};
+
+tableButton.onclick=showTable;
+
+function showTable(){
+const country="Finland";
+const capital="Helsinki";
+const language="Finnish";
+
+const table=`
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Capital</th>
+<th>Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>${country}</td>
+<td>${capital}</td>
+<td>${language}</td>
+</tr>
+</tbody>
+</table>
+`;
+
+document.querySelector("#tableContainer").innerHTML=table;
+}
+
+const headings=document.querySelectorAll("h2");
+
+headings[1].addEventListener("mouseover",function(){
+console.log("Stepped over me with a mouse!");
+headings[1].style.color="blue";
+});
+
+headings[1].addEventListener("mouseout",function(){
+headings[1].style.color="";
+});
+
+headings[0].addEventListener("click",function(){
+headings[0].innerHTML="Bye bye mouse!";
+headings[0].style.color="red";
+});
+
+const feedback=document.querySelector("#feedback");
+const status=document.querySelector("#status");
+const charcount=document.querySelector("#charcount");
+const preview=document.querySelector("#preview");
+
+feedback.addEventListener("focus",function(){
+status.innerHTML="You are typing...";
+feedback.style.backgroundColor="#ffffcc";
+});
+
+feedback.addEventListener("blur",function(){
+status.innerHTML="";
+feedback.style.backgroundColor="";
+});
+
+feedback.addEventListener("input",function(){
+charcount.innerHTML=feedback.value.length+"/200";
+preview.innerHTML=feedback.value;
+});
+
+const form=document.querySelector("#feedbackForm");
+
+form.addEventListener("submit",function(event){
+event.preventDefault();
+
+const length=feedback.value.length;
+
+if(length<10||length>200){
+status.innerHTML="Feedback must be between 10 and 200 characters.";
+status.style.color="red";
+}else{
+status.innerHTML="Thank you for your feedback!";
+status.style.color="green";
+feedback.value="";
+charcount.innerHTML="0/200";
+preview.innerHTML="(The preview will appear here)";
+}
+});
+
+const keybox=document.querySelector("#keybox");
+const keyinfo=document.querySelector("#keyinfo");
+
+document.addEventListener("keydown",function(event){
+console.log(event);
+keyinfo.innerHTML="Key: "+event.key+"<br>Code: "+event.code;
+keybox.innerHTML=event.key;
+keybox.style.fontSize="2em";
+});
+</script>
+
+</body>
+</html>
